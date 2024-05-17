@@ -3,7 +3,7 @@ package main.java;
 import javax.swing.JPanel;
 import java.awt.*;
 
-public class bullet extends JPanel{
+public class Bullet extends JPanel{
     
     private final int DISPARO = 0;
     private final int MISIL = 1;
@@ -14,8 +14,9 @@ public class bullet extends JPanel{
     private int damage;
     private int[] position;
     private int[] direction;
+    private Image sprite;
 
-    public bullet(){
+    public Bullet(){
 
     }
 
@@ -31,6 +32,24 @@ public class bullet extends JPanel{
     }
     public void setType(int type) {
         this.type = type;
+    }
+    public void setSprite() {
+
+        Toolkit t = Toolkit.getDefaultToolkit();
+        switch (type) {
+            case DISPARO:
+                this.sprite = t.getImage("src/main/resources/disparo0"+aux+".png");
+                break;
+            case MISIL:
+                this.sprite = t.getImage("src/main/resources/misil"+aux+".png");
+                break;
+            case LASER:
+                this.sprite = t.getImage("src/main/resources/laser"+aux+".png");
+                break;
+            default:
+            this.sprite = null;
+                break;
+        }
     }
 
     //Getters
@@ -75,22 +94,8 @@ public class bullet extends JPanel{
     @Override
 
     public void paint (Graphics g){
-        Toolkit t = Toolkit.getDefaultToolkit();
-        Image sprite;
-        switch (type) {
-            case DISPARO:
-                sprite = t.getImage(getClass().getResource("src/main/resources/disparo0"+aux+".png"));
-                break;
-            case MISIL:
-                sprite = t.getImage(getClass().getResource("src/main/resources/misil"+aux+".png"));
-                break;
-            case LASER:
-                sprite = t.getImage(getClass().getResource("src/main/resources/laser"+aux+".png"));
-                break;
-            default:
-            sprite = null;
-                break;
-        }
+
         g.drawImage(sprite, position[0], position[1], this);
+
     }
 }
