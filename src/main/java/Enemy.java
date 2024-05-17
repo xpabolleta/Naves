@@ -6,9 +6,11 @@ import java.awt.*;
 public class Enemy extends JPanel {
     
     private int[] position;
+    private int[] direction;
     private int level;
     private int health;
     private Image sprite;
+    
 
     public Enemy(){
     }
@@ -16,6 +18,9 @@ public class Enemy extends JPanel {
     // Setters
     public void setPosition(int[] position) {
         this.position = position;
+    }
+    public void setDirection(int[] direction) {
+        this.direction = direction;
     }
     public void setLevel(int level) {
         this.level = level;
@@ -94,11 +99,20 @@ public class Enemy extends JPanel {
     public int[] getPosition() {
         return position;
     }
+    public int[] getDirection() {
+        return direction;
+    }
     public int getLevel() {
         return level;
     }
     public int getHealth() {
         return health;
+    }
+
+    public void move(){
+        if(position[0] < 650){
+            position[0] += direction[0];
+        }
     }
 
     public void shoot(){
