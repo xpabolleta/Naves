@@ -12,8 +12,10 @@ public class Bullet extends JPanel{
     private int aux;
     private int type;
     private int damage;
-    private int[] position;
-    private int[] direction;
+    private int positionx;
+    private int positiony;
+    private int directionx;
+    private int directiony;
     private Image sprite;
 
     public Bullet(){
@@ -24,11 +26,17 @@ public class Bullet extends JPanel{
     public void setDamage(int damage) {
         this.damage = damage;
     }
-    public void setDirection(int[] direction) {
-        this.direction = direction;
+    public void setDirectionx(int directionx) {
+        this.directionx = directionx;
     }
-    public void setPosition(int[] position) {
-        this.position = position;
+    public void setDirectiony(int directiony) {
+        this.directiony = directiony;
+    }
+    public void setPositionx(int positionx) {
+        this.positionx = positionx;
+    }
+    public void setPositiony(int positiony) {
+        this.positiony = positiony;
     }
     public void setType(int type) {
         this.type = type;
@@ -56,11 +64,17 @@ public class Bullet extends JPanel{
     public int getDamage() {
         return damage;
     }
-    public int[] getDirection() {
-        return direction;
+    public int getDirectionx() {
+        return directionx;
     }
-    public int[] getPosition() {
-        return position;
+    public int getDirectiony() {
+        return directiony;
+    }
+    public int getPositionx() {
+        return positionx;
+    }
+    public int getPositiony() {
+        return positiony;
     }
     public int getType() {
         return type;
@@ -87,15 +101,15 @@ public class Bullet extends JPanel{
             default:
                 break;
         }
-        position[0] += direction[0];
-        position[1] += direction[1]; 
+        positionx += directionx;
+        positiony += directiony; 
     }
 
     @Override
 
     public void paint (Graphics g){
 
-        g.drawImage(sprite, position[0], position[1], this);
+        g.drawImage(sprite, positionx, positiony, this);
 
     }
 }

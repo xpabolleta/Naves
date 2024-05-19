@@ -1,11 +1,11 @@
 package main.java;
 
-import javax.swing.JPanel;
 import java.awt.*;
 
-public class Player extends JPanel {
+public class Player {
     
-    private int[] position;
+    private int positionx;
+    private int positiony;
     private int level;
     private int health;
     private int lives;
@@ -14,18 +14,24 @@ public class Player extends JPanel {
 
     public Player(){
     }
-    public Player(int[] position,int level, int health, int lives, int score){
-        this.position = position;
+    public Player(int positionx,int positiony,int level, int health, int lives, int score){
+
+        this.positionx = positionx;
+        this.positiony = positiony;
         this.level = level;
         this.health = health;
         this.lives = lives;
         this.score = score;
         setSprite();
+        
     }
 
     // Setters
-    public void setPosition(int[] position) {
-        this.position = position;
+    public void setPositionx(int positionx) {
+        this.positionx = positionx;
+    }
+    public void setPositiony(int positiony) {
+        this.positiony = positiony;
     }
     public void setLevel(int level) {
         this.level = level;
@@ -65,8 +71,11 @@ public class Player extends JPanel {
     }
 
     // Getters
-    public int[] getPosition() {
-        return position;
+    public int getPositionx() {
+        return positionx;
+    }
+    public int getPositiony() {
+        return positiony;
     }
     public int getLevel() {
         return level;
@@ -91,11 +100,11 @@ public class Player extends JPanel {
         
     }
 
-    @Override
 
     public void paint (Graphics g){
         
-        g.drawImage(sprite, position[0], position[1], this);
+        g.drawImage(sprite, positionx, positiony, null);
+
     }
 
 }

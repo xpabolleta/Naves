@@ -1,12 +1,11 @@
 package main.java;
 
-import javax.swing.JPanel;
 import java.awt.*;
 
-public class Enemy extends JPanel {
+public class Enemy {
     
-    private int[] position;
-    private int[] direction;
+    private int positionx;
+    private int positiony;
     private int level;
     private int health;
     private Image sprite;
@@ -15,12 +14,22 @@ public class Enemy extends JPanel {
     public Enemy(){
     }
 
-    // Setters
-    public void setPosition(int[] position) {
-        this.position = position;
+    public Enemy(int positionx,int positiony,int level, int health){
+
+        this.positionx = positionx;
+        this.positiony = positiony;
+        this.level = level;
+        this.health = health;
+        this.setSprite();
+    
     }
-    public void setDirection(int[] direction) {
-        this.direction = direction;
+    
+    // Setters
+    public void setPositionx(int positionx) {
+        this.positionx = positionx;
+    }
+    public void setPositiony(int positiony) {
+        this.positiony = positiony;
     }
     public void setLevel(int level) {
         this.level = level;
@@ -35,38 +44,38 @@ public class Enemy extends JPanel {
             case 1:
 
                 if(health > 14){
-                    this.sprite = t.getImage(getClass().getResource("src/main/resources/enemigo1-verde.png"));
+                    this.sprite = t.getImage("src/main/resources/enemigo1-verde.png");
                 }else if(health > 12){
-                    this.sprite = t.getImage(getClass().getResource("src/main/resources/enemigo1-rojo.png"));
+                    this.sprite = t.getImage("src/main/resources/enemigo1-rojo.png");
                 }else if(health > 10){
-                    this.sprite = t.getImage(getClass().getResource("src/main/resources/enemigo1-naranja.png"));
+                    this.sprite = t.getImage("src/main/resources/enemigo1-naranja.png");
                 }else if(health > 8){
-                    this.sprite = t.getImage(getClass().getResource("src/main/resources/enemigo1-gris.png"));
+                    this.sprite = t.getImage("src/main/resources/enemigo1-gris.png");
                 }else if(health > 4){
-                    this.sprite = t.getImage(getClass().getResource("src/main/resources/enemigo1-azulclaro.png"));
+                    this.sprite = t.getImage("src/main/resources/enemigo1-azulclaro.png");
                 }else if(health > 2){
-                    this.sprite = t.getImage(getClass().getResource("src/main/resources/enemigo1-azul.png"));
+                    this.sprite = t.getImage("src/main/resources/enemigo1-azul.png");
                 }else{
-                    this.sprite = t.getImage(getClass().getResource("src/main/resources/enemigo1-amarillo.png"));
+                    this.sprite = t.getImage("src/main/resources/enemigo1-amarillo.png");
                 }
                 break;
 
             case 2:
 
                 if(health > 28){
-                    this.sprite = t.getImage(getClass().getResource("src/main/resources/enemigo2-verde.png"));
+                    this.sprite = t.getImage("src/main/resources/enemigo2-verde.png");
                 }else if(health > 26){
-                    this.sprite = t.getImage(getClass().getResource("src/main/resources/enemigo2-rojo.png"));
+                    this.sprite = t.getImage("src/main/resources/enemigo2-rojo.png");
                 }else if(health > 24){
-                    this.sprite = t.getImage(getClass().getResource("src/main/resources/enemigo2-naranja.png"));
+                    this.sprite = t.getImage("src/main/resources/enemigo2-naranja.png");
                 }else if(health > 22){
-                    this.sprite = t.getImage(getClass().getResource("src/main/resources/enemigo2-gris.png"));
+                    this.sprite = t.getImage("src/main/resources/enemigo2-gris.png");
                 }else if(health > 20){
-                    this.sprite = t.getImage(getClass().getResource("src/main/resources/enemigo2-azulclaro.png"));
+                    this.sprite = t.getImage("src/main/resources/enemigo2-azulclaro.png");
                 }else if(health > 18){
-                    this.sprite = t.getImage(getClass().getResource("src/main/resources/enemigo2-azul.png"));
+                    this.sprite = t.getImage("src/main/resources/enemigo2-azul.png");
                 }else{
-                    this.sprite = t.getImage(getClass().getResource("src/main/resources/enemigo2-amarillo.png"));
+                    this.sprite = t.getImage("src/main/resources/enemigo2-amarillo.png");
                 }
                 break;
 
@@ -96,11 +105,11 @@ public class Enemy extends JPanel {
     }
 
     // Getters
-    public int[] getPosition() {
-        return position;
+    public int getPositionx() {
+        return positionx;
     }
-    public int[] getDirection() {
-        return direction;
+    public int getPositiony() {
+        return positiony;
     }
     public int getLevel() {
         return level;
@@ -110,9 +119,7 @@ public class Enemy extends JPanel {
     }
 
     public void move(){
-        if(position[0] < 650){
-            position[0] += direction[0];
-        }
+
     }
 
     public void shoot(){
@@ -122,10 +129,9 @@ public class Enemy extends JPanel {
         
     }
 
-    @Override
-
     public void paint (Graphics g){
         
-        g.drawImage(sprite, position[0], position[1], this);
+        g.drawImage(sprite, positionx, positiony, null);
+    
     }
 }
