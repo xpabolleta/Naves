@@ -7,7 +7,9 @@ import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import javax.swing.JPanel;
 
-public class Screen extends JPanel implements KeyListener{
+import main.java.Bullet.BulletCreator;
+
+public class Screen extends JPanel implements KeyListener, BulletCreator{
 
     private final int ARRIBA = 38;
     private final int ABAJO = 40;
@@ -20,6 +22,7 @@ public class Screen extends JPanel implements KeyListener{
 
     public Screen(){
 
+        bullets = new ArrayList<Bullet>();
         setLayout(null);
         setBackground(Color.BLACK);
 
@@ -31,6 +34,7 @@ public class Screen extends JPanel implements KeyListener{
     }
     public void setPlayer(Player player) {
         this.player = player;
+        player.setBulletCreator(this);
     }
     public void setBullets(ArrayList<Bullet> bullets) {
         this.bullets = bullets;
@@ -130,5 +134,11 @@ public class Screen extends JPanel implements KeyListener{
     }
     @Override
     public void keyTyped(KeyEvent e) {
+    }
+
+    @Override
+    public void createBullet(int positionx, int positiony, int directionx, int directiony) {
+        Bullet bullet = new Bullet(1, 10, positionx, positiony, directionx, directiony);
+        bullets.add(bullet);
     }
 }

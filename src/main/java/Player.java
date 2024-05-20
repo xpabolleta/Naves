@@ -2,6 +2,8 @@ package main.java;
 
 import java.awt.*;
 
+import main.java.Bullet.BulletCreator;
+
 public class Player{
     
     private int positionx;
@@ -10,6 +12,7 @@ public class Player{
     private int health;
     private int lives;
     private int score;
+    private BulletCreator bulletCreator;
     private Image sprite;
 
     public Player(){
@@ -69,6 +72,9 @@ public class Player{
                 break;
         }
     }
+    public void setBulletCreator(BulletCreator bulletCreator) {
+        this.bulletCreator = bulletCreator;
+    }
 
     // Getters
     public int getPositionx() {
@@ -97,7 +103,8 @@ public class Player{
 
     }
     public void shoot(){
-
+        
+        bulletCreator.createBullet(positionx, positiony, 0, -3);
     }
     public void die(){
         

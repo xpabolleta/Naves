@@ -29,7 +29,7 @@ public class Bullet extends JPanel{
         this.directionx = directionx;
         this.directiony = directiony;
         setSprite();
-        
+
     }
     // Setters
     public void setDamage(int damage) {
@@ -113,6 +113,10 @@ public class Bullet extends JPanel{
         positionx += directionx;
         positiony += directiony;
         setSprite();
+    }
+
+    public interface BulletCreator {
+        void createBullet(int positionx, int positiony, int directionx, int directiony);
     }
 
     @Override
