@@ -6,6 +6,8 @@ public class Enemy {
     
     private int positionx;
     private int positiony;
+    private int directionx = 3;
+    private int directiony = 10;
     private int level;
     private int health;
     private Image sprite;
@@ -30,6 +32,12 @@ public class Enemy {
     }
     public void setPositiony(int positiony) {
         this.positiony = positiony;
+    }
+    public void setDirectionx(int directionx) {
+        this.directionx = directionx;
+    }
+    public void setDirectiony(int directiony) {
+        this.directiony = directiony;
     }
     public void setLevel(int level) {
         this.level = level;
@@ -111,6 +119,12 @@ public class Enemy {
     public int getPositiony() {
         return positiony;
     }
+    public int getDirectionx() {
+        return directionx;
+    }
+    public int getDirectiony() {
+        return directiony;
+    }
     public int getLevel() {
         return level;
     }
@@ -118,8 +132,15 @@ public class Enemy {
         return health;
     }
 
-    public void move(){
-
+    public void update(){
+        positionx += directionx;
+        if(positionx > 1000){
+            positiony += directiony;
+            directionx = -directionx;
+        }else if(positionx < 0){
+            positiony += directiony;
+            directionx = Math.abs(directionx);
+        }
     }
 
     public void shoot(){

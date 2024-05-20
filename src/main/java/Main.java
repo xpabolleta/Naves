@@ -7,23 +7,28 @@ import javax.swing.JFrame;
 public class Main extends JFrame{
     public static void main(String[] args) {
 
-        JFrame ventana = new JFrame("Practica 07");
-        
-        Player player = new Player(50, 50, 3, 100, 3, 0);
-        
-        ArrayList<Enemy> enemies = new ArrayList<Enemy>();
-        Enemy enemy = new Enemy(500, 500, 3, 100);
-        enemies.add(enemy);
+        JFrame window = new JFrame("Practica 07");
+        window.setSize(1000,600);
+        window.setDefaultCloseOperation(3);
+        window.setLocationRelativeTo(null);
+
         Screen screen = new Screen();
-        screen.setEnemies(enemies);
+        screen.addKeyListener(screen);
+        screen.setFocusable(true);
+        
+        Player player = new Player(0, 0, 1, 100, 3, 0);
         screen.setPlayer(player);
 
-        ventana.add(screen);
-        ventana.setSize(1000, 700);
-        ventana.setDefaultCloseOperation(3);
-        ventana.setLocationRelativeTo(null);
-        ventana.setVisible(true);
-        screen.run();
+        Enemy enemy = new Enemy(50, 50, 1, 100);
+        ArrayList <Enemy> enemies = new ArrayList<Enemy>();
+        enemies.add(enemy);
+        screen.setEnemies(enemies);
+
+        window.add(screen);
+        window.setVisible(true);
+
+        GameLoop gameLoop = new GameLoop(screen);
+        gameLoop.start();
 
     }
 }

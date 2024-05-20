@@ -2,7 +2,7 @@ package main.java;
 
 import java.awt.*;
 
-public class Player {
+public class Player{
     
     private int positionx;
     private int positiony;
@@ -93,6 +93,9 @@ public class Player {
         return sprite;
     }
 
+    public void update(){
+
+    }
     public void shoot(){
 
     }
@@ -106,5 +109,4 @@ public class Player {
         g.drawImage(sprite, positionx, positiony, null);
 
     }
-
 }

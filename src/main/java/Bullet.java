@@ -19,9 +19,18 @@ public class Bullet extends JPanel{
     private Image sprite;
 
     public Bullet(){
-
     }
+    public Bullet(int type, int damage, int positionx, int positiony, int directionx, int directiony){
 
+        this.type = type;
+        this.damage = damage;
+        this.positionx = positionx;
+        this.positiony = positiony;
+        this.directionx = directionx;
+        this.directiony = directiony;
+        setSprite();
+        
+    }
     // Setters
     public void setDamage(int damage) {
         this.damage = damage;
@@ -80,7 +89,7 @@ public class Bullet extends JPanel{
         return type;
     }
 
-    public void refresh(){
+    public void update(){
         aux++;
         switch (type) {
             case DISPARO:
@@ -102,7 +111,8 @@ public class Bullet extends JPanel{
                 break;
         }
         positionx += directionx;
-        positiony += directiony; 
+        positiony += directiony;
+        setSprite();
     }
 
     @Override
