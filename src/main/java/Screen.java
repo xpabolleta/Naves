@@ -2,6 +2,7 @@ package main.java;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
@@ -17,12 +18,15 @@ public class Screen extends JPanel implements KeyListener, BulletCreator{
     private final int DERECHA = 39;
     private final int ESPACIO = 32;
     private ArrayList <Enemy> enemies;
-    private ArrayList <Bullet> bullets;
+    private ArrayList <Bullet> enemyBullets;
+    private ArrayList <Bullet> playerBullets;
     private Player player;
 
     public Screen(){
 
-        bullets = new ArrayList<Bullet>();
+        enemies = new ArrayList<Enemy>();
+        enemyBullets = new ArrayList<Bullet>();
+        playerBullets = new ArrayList<Bullet>();
         setLayout(null);
         setBackground(Color.BLACK);
 
@@ -31,13 +35,19 @@ public class Screen extends JPanel implements KeyListener, BulletCreator{
     // Setters
     public void setEnemies(ArrayList<Enemy> enemies) {
         this.enemies = enemies;
+        for (Enemy enemy : enemies) {
+            enemy.setBulletCreator(this);
+        }
     }
     public void setPlayer(Player player) {
         this.player = player;
         player.setBulletCreator(this);
     }
-    public void setBullets(ArrayList<Bullet> bullets) {
-        this.bullets = bullets;
+    public void setEnemyBullets(ArrayList<Bullet> enemyBullets) {
+        this.enemyBullets = enemyBullets;
+    }
+    public void setPlayerBullets(ArrayList<Bullet> playerBullets) {
+        this.playerBullets = playerBullets;
     }
 
     // Getters
@@ -47,15 +57,11 @@ public class Screen extends JPanel implements KeyListener, BulletCreator{
     public ArrayList<Enemy> getEnemies() {
         return enemies;
     }
-    public ArrayList<Bullet> getBullets() {
-        return bullets;
+    public ArrayList<Bullet> getEnemyBullets() {
+        return enemyBullets;
     }
-
-    public void addEnemy(Enemy enemy){
-        enemies.add(enemy);
-    }
-    public void addBullet(Bullet bullet){
-        bullet.add(bullet);
+    public ArrayList<Bullet> getPlayerBullets() {
+        return playerBullets;
     }
 
     public void update(){
@@ -67,15 +73,54 @@ public class Screen extends JPanel implements KeyListener, BulletCreator{
             for (Enemy enemy : enemies) {
         
                 enemy.update();
+                Rectangle enemyRect = new Rectangle(enemy.getPositionx(), enemy.getPositiony(), enemy.getWidth(), enemy.getHeight());
+                Rectangle playerRect = new Rectangle(player.getPositionx(), player.getPositiony(), player.getWidth(), player.getHeight());
+                if(enemyRect.intersects(playerRect)){
+
+                    if(player.hit(10)){
+                        // Fin del juego
+                    }
+                    if(enemy.hit(10)){
+                        enemies.remove(enemy);
+                    }
+
+                }
         
             }
         }
-        if(bullets != null){
+        if(enemyBullets != null){
+            for (Bullet bullet : enemyBullets) {
+                bullet.update();
+                Rectangle bulletRect = new Rectangle(bullet.getPositionx(), bullet.getPositiony(), bullet.getWidth(), bullet.getHeight());
+                Rectangle playerRect = new Rectangle(player.getPositionx(), player.getPositiony(), player.getWidth(), player.getHeight());
+                if(bulletRect.intersects(playerRect)){
+                    enemyBullets.remove(bullet);
+                    if(player.hit(bullet.getDamage())){
+                        // Fin del juego
+                    }
+                    return;
+                }
+            }
+        }
+        if(playerBullets != null){
         
-            for (Bullet bullet : bullets) {
+            for (Bullet bullet : playerBullets) {
         
                 bullet.update();
-        
+
+                if(enemies != null){
+                    for (Enemy enemy : enemies) {
+                        Rectangle bulletRect = new Rectangle(bullet.getPositionx(), bullet.getPositiony(), bullet.getWidth(), bullet.getHeight());
+                        Rectangle enemyRect = new Rectangle(enemy.getPositionx(), enemy.getPositiony(), enemy.getWidth(), enemy.getHeight());
+                        if(bulletRect.intersects(enemyRect)){
+                            playerBullets.remove(bullet);
+                            if(enemy.hit(bullet.getDamage())){
+                                enemies.remove(enemy);
+                            }
+                            return;
+                        }
+                    }
+                }
             }
         }
     }
@@ -87,15 +132,22 @@ public class Screen extends JPanel implements KeyListener, BulletCreator{
         
         player.paint(g);
 
-        if(bullets != null){
+        if(enemyBullets != null){
         
-            for (Bullet bullet : bullets) {
+            for (Bullet bullet : enemyBullets) {
         
                 bullet.paint(g);
         
             }
         }
-
+        if(playerBullets != null){
+        
+            for (Bullet bullet : playerBullets) {
+        
+                bullet.paint(g);
+        
+            }
+        }
         if(enemies != null){
         
             for (Enemy enemy : enemies) {
@@ -110,16 +162,16 @@ public class Screen extends JPanel implements KeyListener, BulletCreator{
         public void keyPressed(KeyEvent e) {
             switch (e.getKeyCode()) {
                 case ARRIBA:
-                    player.setPositiony(player.getPositiony() - 5);
+                    player.move(0, -3);
                     break;
                 case ABAJO:
-                    player.setPositiony(player.getPositiony() + 5);
+                    player.move(0, 3);
                     break;
                 case IZQUIERDA:
-                    player.setPositionx(player.getPositionx() - 5);
+                    player.move(-3, 0);
                     break;
                 case DERECHA:
-                    player.setPositionx(player.getPositionx() + 5);
+                    player.move(3, 0);
                     break;
                 case ESPACIO:
                     player.shoot();
@@ -137,8 +189,12 @@ public class Screen extends JPanel implements KeyListener, BulletCreator{
     }
 
     @Override
-    public void createBullet(int positionx, int positiony, int directionx, int directiony) {
-        Bullet bullet = new Bullet(1, 10, positionx, positiony, directionx, directiony);
-        bullets.add(bullet);
+    public void createBullet(int type, int positionx, int positiony, int directionx, int directiony) {
+        Bullet bullet = new Bullet(type, positionx, positiony, directionx, directiony);
+        if((type == Bullet.DISPARO1)||(type == Bullet.DISPARO2)||(type == Bullet.DISPARO3)||(type == Bullet.DISPARO4)||(type == Bullet.MISIL)){
+            playerBullets.add(bullet);
+        }else{
+            enemyBullets.add(bullet);
+        }
     }
 }

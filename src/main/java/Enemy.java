@@ -1,21 +1,23 @@
 package main.java;
 
 import java.awt.*;
+import javax.swing.JPanel;
+import main.java.Bullet.BulletCreator;
 
-public class Enemy {
+public class Enemy extends JPanel{
     
     private int positionx;
     private int positiony;
-    private int directionx = 3;
-    private int directiony = 10;
+    private int directionx = 1;
+    private int directiony = 1;
     private int level;
     private int health;
+    private BulletCreator bulletCreator;
     private Image sprite;
     
-
+    // Constructores
     public Enemy(){
     }
-
     public Enemy(int positionx,int positiony,int level, int health){
 
         this.positionx = positionx;
@@ -50,7 +52,7 @@ public class Enemy {
         Toolkit t = Toolkit.getDefaultToolkit();
         switch (level) {
             case 1:
-
+                setSize(30,30);
                 if(health > 14){
                     this.sprite = t.getImage("src/main/resources/enemigo1-verde.png");
                 }else if(health > 12){
@@ -69,7 +71,7 @@ public class Enemy {
                 break;
 
             case 2:
-
+                setSize(30,40);
                 if(health > 28){
                     this.sprite = t.getImage("src/main/resources/enemigo2-verde.png");
                 }else if(health > 26){
@@ -88,7 +90,7 @@ public class Enemy {
                 break;
 
             case 3:
-
+                setSize(50,30);
                 if(health > 42){
                     this.sprite = t.getImage("src/main/resources/enemigo3-verde.png");
                 }else if(health > 40){
@@ -111,6 +113,9 @@ public class Enemy {
                 break;
         }
     }
+    public void setBulletCreator(BulletCreator bulletCreator) {
+        this.bulletCreator = bulletCreator;
+    }
 
     // Getters
     public int getPositionx() {
@@ -132,7 +137,14 @@ public class Enemy {
         return health;
     }
 
+    // Metodos
     public void update(){
+        move();
+        if(Math.random()*1000 < 10){
+            shoot();
+        }
+    }
+    public void move(){
         positionx += directionx;
         if(positionx > 1000){
             positiony += directiony;
@@ -142,17 +154,24 @@ public class Enemy {
             directionx = Math.abs(directionx);
         }
     }
-
     public void shoot(){
-
+        int type;
+        type = (int) (Math.random()*5)+4;
+        bulletCreator.createBullet(type,positionx, positiony, 0, 3);
+    }
+    public boolean hit(int damage){
+        boolean isDead = false;
+        setHealth(health - damage);
+        if(health <=  0){
+            isDead = true;
+        }
+        return isDead;
     }
     public void die(){
-        
     }
-
+    // Dibujar
+    @Override
     public void paint (Graphics g){
-        
-        g.drawImage(sprite, positionx, positiony, null);
-    
+        g.drawImage(sprite, positionx, positiony, this);
     }
 }

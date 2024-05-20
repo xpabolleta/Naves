@@ -20,8 +20,10 @@ public class Main extends JFrame{
         screen.setPlayer(player);
 
         Enemy enemy = new Enemy(50, 50, 1, 100);
+        Enemy enemy2 = new Enemy(150, 50, 1, 100);
         ArrayList <Enemy> enemies = new ArrayList<Enemy>();
         enemies.add(enemy);
+        enemies.add(enemy2);
         screen.setEnemies(enemies);
 
         window.add(screen);

@@ -2,9 +2,11 @@ package main.java;
 
 import java.awt.*;
 
+import javax.swing.JPanel;
+
 import main.java.Bullet.BulletCreator;
 
-public class Player{
+public class Player extends JPanel{
     
     private int positionx;
     private int positiony;
@@ -54,18 +56,23 @@ public class Player{
         switch (level) {
             case 1:
                 this.sprite = t.getImage("src/main/resources/nave01.png");
+                this.setSize(64,40);
                 break;
             case 2:
                 this.sprite = t.getImage("src/main/resources/nave02.png");
+                this.setSize(100,40);
                 break;
             case 3:
                 this.sprite = t.getImage("src/main/resources/nave03.png");
+                this.setSize(100,75);
                 break;
             case 4:
                 this.sprite = t.getImage("src/main/resources/nave04.png");
+                this.setSize(100,75);
                 break;
             case 5:
                 this.sprite = t.getImage("src/main/resources/nave05.png");
+                this.setSize(170,90);
                 break;
             default:
                 this.sprite = null;
@@ -102,18 +109,34 @@ public class Player{
     public void update(){
 
     }
+    public void move(int directionx, int directiony){
+        positionx += directionx;
+        positiony += directiony;
+    }
+    public boolean hit(int damage){
+        boolean isDead = false;
+        setHealth(health - damage);
+        if(health <=  0){
+            lives--;
+            if(lives < 0){
+                isDead = true;
+            }else{
+                health = 100;
+            }
+        }
+        return isDead;
+    }
     public void shoot(){
         
-        bulletCreator.createBullet(positionx, positiony, 0, -3);
+        bulletCreator.createBullet(1,positionx, positiony, 0, -3);
     }
     public void die(){
-        
+
     }
 
 
+    @Override
     public void paint (Graphics g){
-        
-        g.drawImage(sprite, positionx, positiony, null);
-
+        g.drawImage(sprite, positionx, positiony, this);
     }
 }
