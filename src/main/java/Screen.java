@@ -18,15 +18,18 @@ public class Screen extends JPanel implements KeyListener, BulletCreator, Explos
     private final int IZQUIERDA = 37;
     private final int DERECHA = 39;
     private final int ESPACIO = 32;
-    private int round;
+
+    private ArrayList<Integer> pressedKeys;
     private ArrayList <Enemy> enemies;
     private ArrayList <Bullet> enemyBullets;
     private ArrayList <Bullet> playerBullets;
     private ArrayList <Explosion> explosions;
     private ArrayList <Star> stars;
-    private ArrayList<Integer> pressedKeys;
+    private int round;
     private Player player;
     private Panel panel;
+    private long now;
+    private long last;
 
     public Screen(){
 
@@ -37,12 +40,17 @@ public class Screen extends JPanel implements KeyListener, BulletCreator, Explos
         stars = new ArrayList<Star>();
         pressedKeys = new ArrayList<Integer>();
         round = 1;
+        now = System.currentTimeMillis();
+        last = System.currentTimeMillis();
         setLayout(null);
         setBackground(Color.BLACK);
 
     }
 
     // Setters
+    public void setRound(int round) {
+        this.round = round;
+    }
     public void setEnemies(ArrayList<Enemy> enemies) {
         this.enemies = enemies;
         for (Enemy enemy : enemies) {
@@ -61,6 +69,15 @@ public class Screen extends JPanel implements KeyListener, BulletCreator, Explos
     }
     public void setPlayerBullets(ArrayList<Bullet> playerBullets) {
         this.playerBullets = playerBullets;
+    }
+    public void setExplosions(ArrayList<Explosion> explosions) {
+        this.explosions = explosions;
+    }
+    public void setStars(ArrayList<Star> stars) {
+        this.stars = stars;
+    }
+    public void setPanel(Panel panel) {
+        this.panel = panel;
     }
 
     // Getters
@@ -81,6 +98,12 @@ public class Screen extends JPanel implements KeyListener, BulletCreator, Explos
     }
     public ArrayList<Star> getStars() {
         return stars;
+    }
+    public int getRound() {
+        return round;
+    }
+    public Panel getPanel() {
+        return panel;
     }
 
     public boolean update(){
@@ -184,7 +207,12 @@ public class Screen extends JPanel implements KeyListener, BulletCreator, Explos
             dx += 5;
         }
         if (pressedKeys.contains(ESPACIO)) {
-            player.shoot();
+            now = System.currentTimeMillis();
+            if(now - last > 100){
+                player.shoot();
+                last = now;
+            }
+            
         }
     
         player.move(dx, dy);
@@ -201,6 +229,14 @@ public class Screen extends JPanel implements KeyListener, BulletCreator, Explos
         
                 star.paint(g);
         
+            }
+        }
+        if(explosions.size() > 0){
+
+            for (Explosion explosion : explosions) {
+
+                explosion.paint(g);
+
             }
         }
         if(enemyBullets.size() > 0){
@@ -225,14 +261,6 @@ public class Screen extends JPanel implements KeyListener, BulletCreator, Explos
         
                 enemy.paint(g);
         
-            }
-        }
-        if(explosions.size() > 0){
-
-            for (Explosion explosion : explosions) {
-
-                explosion.paint(g);
-
             }
         }
         player.paint(g);

@@ -55,8 +55,8 @@ public class Star extends JPanel{
         now = System.currentTimeMillis();
         if(now - last > speed){
             setPositiony(positiony + 3);
+            last = now;
         }
-        last = now;
     }
 
     @Override
