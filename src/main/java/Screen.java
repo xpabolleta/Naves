@@ -6,6 +6,7 @@ import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
+
 import javax.swing.JPanel;
 import main.java.Bullet.BulletCreator;
 import main.java.Explosion.ExplosionCreator;
@@ -17,10 +18,13 @@ public class Screen extends JPanel implements KeyListener, BulletCreator, Explos
     private final int IZQUIERDA = 37;
     private final int DERECHA = 39;
     private final int ESPACIO = 32;
+    private int round;
     private ArrayList <Enemy> enemies;
     private ArrayList <Bullet> enemyBullets;
     private ArrayList <Bullet> playerBullets;
     private ArrayList <Explosion> explosions;
+    private ArrayList <Star> stars;
+    private ArrayList<Integer> pressedKeys;
     private Player player;
     private Panel panel;
 
@@ -30,6 +34,9 @@ public class Screen extends JPanel implements KeyListener, BulletCreator, Explos
         enemyBullets = new ArrayList<Bullet>();
         playerBullets = new ArrayList<Bullet>();
         explosions = new ArrayList<Explosion>();
+        stars = new ArrayList<Star>();
+        pressedKeys = new ArrayList<Integer>();
+        round = 1;
         setLayout(null);
         setBackground(Color.BLACK);
 
@@ -72,20 +79,41 @@ public class Screen extends JPanel implements KeyListener, BulletCreator, Explos
     public ArrayList<Explosion> getExplosions() {
         return explosions;
     }
+    public ArrayList<Star> getStars() {
+        return stars;
+    }
 
-    public void update(){
-
+    public boolean update(){
+        checkKey();
         player.update();
         panel.setLives(player.getLives());
         panel.setHealth(player.getHealth());
         panel.setScore(player.getScore());
-
+        if((Math.random()*60) < 5){
+            int positionx = (int) (Math.random()*1000);
+            int diameter = (int) (Math.random()*3+2);
+            int speed = (int) (Math.random()*12+6);
+            Star star = new Star(positionx, 0, diameter, speed);
+            stars.add(star);
+        }
+        if(stars.size() > 0){
+            for(int i = 0; i < stars.size();i++){
+                Star star = stars.get(i);
+                star.update();
+                if(star.getPositiony() > 650){
+                    stars.remove(star);
+                }
+            }
+        }
         if(enemies.size() > 0){
         
             for(int i = 0; i < enemies.size();i++){
                 Enemy enemy = enemies.get(i);
                 enemy.update();
             }
+        }else{
+            setEnemies(Enemy.createWave(round));
+            round++;
         }
         if(enemyBullets.size() > 0){
             for(int i = 0; i < enemyBullets.size(); i++){
@@ -96,10 +124,14 @@ public class Screen extends JPanel implements KeyListener, BulletCreator, Explos
                 if(bulletRect.intersects(playerRect)){
                     enemyBullets.remove(bullet);
                     if(player.hit(bullet.getDamage())){
-                        // Fin del juego
+                        return true;
                     }
                 }
+                if((bullet.getPositionx() < 0)||(bullet.getPositionx() > 1000)||(bullet.getPositiony() < 0)||(bullet.getPositiony() > 600)){
+                    enemyBullets.remove(bullet);
+                }
             }
+            
         }
         if(playerBullets.size() > 0){
             for(int i = 0; i < playerBullets.size(); i++){
@@ -113,11 +145,14 @@ public class Screen extends JPanel implements KeyListener, BulletCreator, Explos
                         if(bulletRect.intersects(enemyRect)){
                             playerBullets.remove(bullet);
                             if(enemy.hit(bullet.getDamage())){
-                                player.setScore(player.getScore() + enemy.getLevel() * 10);
+                                player.setScore(player.getScore() + enemy.getLevel() * 30);
                                 enemies.remove(enemy);
                             }
                         }
                     }
+                }
+                if((bullet.getPositionx() < 0)||(bullet.getPositionx() > 1000)||(bullet.getPositiony() < 0)||(bullet.getPositiony() > 600)){
+                    playerBullets.remove(bullet);
                 }
             }
         }
@@ -129,15 +164,45 @@ public class Screen extends JPanel implements KeyListener, BulletCreator, Explos
                 }
             }
         }
+        return false;
+    }
+
+    private void checkKey() {
+        int dx = 0;
+        int dy = 0;
+    
+        if (pressedKeys.contains(ARRIBA)) {
+            dy -= 5;
+        }
+        if (pressedKeys.contains(ABAJO)) {
+            dy += 5;
+        }
+        if (pressedKeys.contains(IZQUIERDA)) {
+            dx -= 5;
+        }
+        if (pressedKeys.contains(DERECHA)) {
+            dx += 5;
+        }
+        if (pressedKeys.contains(ESPACIO)) {
+            player.shoot();
+        }
+    
+        player.move(dx, dy);
     }
 
     @Override
     public void paintComponent(Graphics g) {
 
         super.paintComponent(g);
+
+        if(stars.size() > 0){
         
-        player.paint(g);
-        panel.paint(g);
+            for (Star star : stars) {
+        
+                star.paint(g);
+        
+            }
+        }
         if(enemyBullets.size() > 0){
         
             for (Bullet bullet : enemyBullets) {
@@ -170,33 +235,19 @@ public class Screen extends JPanel implements KeyListener, BulletCreator, Explos
 
             }
         }
+        player.paint(g);
+        panel.paint(g);
     }
     
     @Override
-        public void keyPressed(KeyEvent e) {
-            switch (e.getKeyCode()) {
-                case ARRIBA:
-                    player.move(0, -3);
-                    break;
-                case ABAJO:
-                    player.move(0, 3);
-                    break;
-                case IZQUIERDA:
-                    player.move(-3, 0);
-                    break;
-                case DERECHA:
-                    player.move(3, 0);
-                    break;
-                case ESPACIO:
-                    player.shoot();
-                    break;    
-                default:
-                    break;
-            }
+    public void keyPressed(KeyEvent e) {
+        if (!pressedKeys.contains(e.getKeyCode())) {
+            pressedKeys.add(e.getKeyCode());
         }
-
+    }
     @Override
     public void keyReleased(KeyEvent e) {
+        pressedKeys.remove((Integer) e.getKeyCode());
     }
     @Override
     public void keyTyped(KeyEvent e) {

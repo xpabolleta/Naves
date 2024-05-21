@@ -4,7 +4,7 @@ public class GameLoop implements Runnable{
 
     private Screen screen;
     private boolean running;
-    private final int FPS = 30;
+    private final int FPS = 60;
 
     public GameLoop(){
     }
@@ -36,7 +36,11 @@ public class GameLoop implements Runnable{
     @Override
     public void run() {
         while (running) {
-            screen.update();
+            if(screen.update()){
+                screen.update();
+                screen.repaint();
+                stop();
+            }
             screen.repaint();
             try {
                 Thread.sleep(1000/FPS);

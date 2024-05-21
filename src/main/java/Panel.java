@@ -47,7 +47,11 @@ public class Panel extends JPanel{
         Font font = new Font("Arial",1,15);
         g.setColor(Color.WHITE);
         g.setFont(font);
-        g.drawString("Vidas: " + lives, 5, 20);
+        if(lives >= 0){
+            g.drawString("Vidas: " + lives, 5, 20);
+        }else{
+            g.drawString("Fin del juego", 5, 20);
+        }
         g.drawString("Puntuacion: " + score, 5, 60);
         g.fillRect(5, 25, 102, 15);
         g.setColor(Color.RED);

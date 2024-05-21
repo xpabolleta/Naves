@@ -1,7 +1,5 @@
 package main.java;
 
-import java.util.ArrayList;
-
 import javax.swing.JFrame;
 
 public class Main extends JFrame{
@@ -16,17 +14,8 @@ public class Main extends JFrame{
         screen.addKeyListener(screen);
         screen.setFocusable(true);
         
-        Player player = new Player(0, 0, 1, 100, 1, 0);
+        Player player = new Player(500, 400, 1, 100, 3, 0);
         screen.setPlayer(player);
-
-        Enemy enemy = new Enemy(50, 50, 1, 20);
-        Enemy enemy2 = new Enemy(150, 50, 1, 20);
-        Enemy enemy3 = new Enemy(200, 50, 1, 20);
-        ArrayList <Enemy> enemies = new ArrayList<Enemy>();
-        enemies.add(enemy);
-        enemies.add(enemy2);
-        enemies.add(enemy3);
-        screen.setEnemies(enemies);
 
         window.add(screen);
         window.setVisible(true);

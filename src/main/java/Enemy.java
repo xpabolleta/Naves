@@ -1,6 +1,8 @@
 package main.java;
 
 import java.awt.*;
+import java.util.ArrayList;
+
 import javax.swing.JPanel;
 import main.java.Bullet.BulletCreator;
 import main.java.Explosion.ExplosionCreator;;
@@ -143,9 +145,32 @@ public class Enemy extends JPanel{
     }
 
     // Metodos
+    public static ArrayList<Enemy> createWave(int round){
+        ArrayList<Enemy> wave = new ArrayList<Enemy>();
+        int level;
+        int health;
+        for (int i = 1; i <= 4; i++) {
+            for (int j = 1; j <= 10; j++) {
+                if(round < 9){
+                    level = (int) (Math.random()*2)+1;
+                    if(i-round >= 0){
+                        level = (round/5) + 1;
+                    }else{
+                        level = (round/5) +2;
+                    }
+                }else{
+                    level = (int) (Math.random()*2)+1;
+                }
+                health = level * 14 + 2;
+                Enemy enemy = new Enemy(j*55, i*45, level, health);
+                wave.add(enemy);
+            }
+        }
+        return wave;
+    }
     public void update(){
         move();
-        if(Math.random()*1000 < 10){
+        if(Math.random()*3000 < 2*level){
             shoot();
         }
     }

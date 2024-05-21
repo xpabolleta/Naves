@@ -115,13 +115,13 @@ public class Player extends JPanel{
         }else if(score < 4000){
             level = 2;
         }
-        else if(score < 4000){
+        else if(score < 8000){
             level = 3;
         }
-        else if(score < 4000){
+        else if(score < 1000){
             level = 4;
         }
-        else if(score < 4000){
+        else{
             level = 5;
         }
         setSprite();
