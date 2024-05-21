@@ -188,5 +188,6 @@ public class Bullet extends JPanel{
     @Override
     public void paint (Graphics g){
         g.drawImage(sprite, positionx, positiony, this);
+        Toolkit.getDefaultToolkit().sync();
     }
 }
