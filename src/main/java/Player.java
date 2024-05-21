@@ -1,10 +1,9 @@
 package main.java;
 
 import java.awt.*;
-
 import javax.swing.JPanel;
-
 import main.java.Bullet.BulletCreator;
+import main.java.Explosion.ExplosionCreator;
 
 public class Player extends JPanel{
     
@@ -15,6 +14,7 @@ public class Player extends JPanel{
     private int lives;
     private int score;
     private BulletCreator bulletCreator;
+    private ExplosionCreator explosionCreator;
     private Image sprite;
 
     public Player(){
@@ -82,6 +82,9 @@ public class Player extends JPanel{
     public void setBulletCreator(BulletCreator bulletCreator) {
         this.bulletCreator = bulletCreator;
     }
+    public void setExplosionCreator(ExplosionCreator explosionCreator) {
+        this.explosionCreator = explosionCreator;
+    }
 
     // Getters
     public int getPositionx() {
@@ -107,7 +110,21 @@ public class Player extends JPanel{
     }
 
     public void update(){
-
+        if(score < 2000){
+            level = 1;
+        }else if(score < 4000){
+            level = 2;
+        }
+        else if(score < 4000){
+            level = 3;
+        }
+        else if(score < 4000){
+            level = 4;
+        }
+        else if(score < 4000){
+            level = 5;
+        }
+        setSprite();
     }
     public void move(int directionx, int directiony){
         positionx += directionx;
@@ -119,6 +136,7 @@ public class Player extends JPanel{
         if(health <=  0){
             lives--;
             if(lives < 0){
+                die();
                 isDead = true;
             }else{
                 health = 100;
@@ -127,11 +145,35 @@ public class Player extends JPanel{
         return isDead;
     }
     public void shoot(){
-        
-        bulletCreator.createBullet(1,positionx, positiony, 0, -3);
+        switch (level) {
+            case 1:
+                bulletCreator.createBullet(Bullet.DISPARO1,positionx + (getWidth()/2), positiony, 0, -3);
+                break;
+            case 2:
+                bulletCreator.createBullet(Bullet.DISPARO2,positionx, positiony, 0, -3);
+                bulletCreator.createBullet(Bullet.DISPARO2,positionx + getWidth(), positiony, 0, -3);
+                break;
+            case 3:
+                bulletCreator.createBullet(Bullet.DISPARO3,positionx, positiony, 0, -3);
+                bulletCreator.createBullet(Bullet.DISPARO3,positionx + getWidth()/2, positiony, 0, -3);
+                bulletCreator.createBullet(Bullet.DISPARO3,positionx + getWidth(), positiony, 0, -3);
+                break;
+            case 4:
+                bulletCreator.createBullet(Bullet.DISPARO4,positionx, positiony, 0, -3);
+                bulletCreator.createBullet(Bullet.DISPARO4,positionx + getWidth()/2, positiony, 0, -3);
+                bulletCreator.createBullet(Bullet.DISPARO4,positionx + getWidth(), positiony, 0, -3);
+                break;
+            case 5:
+                bulletCreator.createBullet(Bullet.MISIL,positionx, positiony, 0, -3);
+                bulletCreator.createBullet(Bullet.MISIL,positionx + getWidth()/2, positiony, 0, -3);
+                bulletCreator.createBullet(Bullet.MISIL,positionx + getWidth(), positiony, 0, -3);
+                break;
+            default:
+                break;
+        }        
     }
     public void die(){
-
+        explosionCreator.createExplosion(positionx, positiony);
     }
 
 

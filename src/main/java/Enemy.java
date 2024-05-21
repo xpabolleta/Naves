@@ -3,6 +3,7 @@ package main.java;
 import java.awt.*;
 import javax.swing.JPanel;
 import main.java.Bullet.BulletCreator;
+import main.java.Explosion.ExplosionCreator;;
 
 public class Enemy extends JPanel{
     
@@ -13,6 +14,7 @@ public class Enemy extends JPanel{
     private int level;
     private int health;
     private BulletCreator bulletCreator;
+    private ExplosionCreator explosionCreator;
     private Image sprite;
     
     // Constructores
@@ -116,6 +118,9 @@ public class Enemy extends JPanel{
     public void setBulletCreator(BulletCreator bulletCreator) {
         this.bulletCreator = bulletCreator;
     }
+    public void setExplosionCreator(ExplosionCreator explosionCreator) {
+        this.explosionCreator = explosionCreator;
+    }
 
     // Getters
     public int getPositionx() {
@@ -163,11 +168,14 @@ public class Enemy extends JPanel{
         boolean isDead = false;
         setHealth(health - damage);
         if(health <=  0){
+            die();
             isDead = true;
         }
+        setSprite();
         return isDead;
     }
     public void die(){
+        explosionCreator.createExplosion(positionx, positiony);
     }
     // Dibujar
     @Override
