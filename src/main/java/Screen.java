@@ -200,16 +200,24 @@ public class Screen extends JPanel implements KeyListener, BulletCreator, Explos
         int dy = 0;
     
         if (pressedKeys.contains(ARRIBA)) {
-            dy -= 5;
+            if(player.getPositiony() > 0){
+                dy -= 5;
+            }
         }
         if (pressedKeys.contains(ABAJO)) {
-            dy += 5;
+            if(player.getPositiony() < 700){
+                dy += 5;
+            }
         }
         if (pressedKeys.contains(IZQUIERDA)) {
-            dx -= 5;
+            if(player.getPositionx() > 0){
+                dx -= 5;
+            }
         }
         if (pressedKeys.contains(DERECHA)) {
-            dx += 5;
+            if(player.getPositionx() < 1000){
+                dx += 5;
+            }
         }
         if (pressedKeys.contains(ESPACIO)) {
             now = System.currentTimeMillis();
