@@ -132,6 +132,11 @@ public class Screen extends JPanel implements KeyListener, BulletCreator, Explos
         
             for(int i = 0; i < enemies.size();i++){
                 Enemy enemy = enemies.get(i);
+                Rectangle enemyRect = new Rectangle(enemy.getPositionx(), enemy.getPositiony(), enemy.getWidth(), enemy.getHeight());
+                Rectangle playerRect = new Rectangle(player.getPositionx(), player.getPositiony(), player.getWidth(), player.getHeight());
+                if(enemyRect.intersects(playerRect)){
+                    player.hit(1);
+                }
                 enemy.update();
             }
         }else{

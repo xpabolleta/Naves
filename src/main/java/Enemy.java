@@ -11,8 +11,8 @@ public class Enemy extends JPanel{
     
     private int positionx;
     private int positiony;
-    private int directionx = 1;
-    private int directiony = 1;
+    private int directionx = 2;
+    private int directiony = 2;
     private int level;
     private int health;
     private BulletCreator bulletCreator;
@@ -161,7 +161,7 @@ public class Enemy extends JPanel{
                 }else{
                     level = (int) (Math.random()*2)+1;
                 }
-                health = level * 14 + 2;
+                health = level * 14 + 2 + round;
                 Enemy enemy = new Enemy(j*55, i*45, level, health);
                 wave.add(enemy);
             }
@@ -170,7 +170,7 @@ public class Enemy extends JPanel{
     }
     public void update(){
         move();
-        if(Math.random()*3000 < 2*level){
+        if(Math.random()*3000 < 3*level){
             shoot();
         }
     }
