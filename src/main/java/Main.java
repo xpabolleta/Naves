@@ -6,7 +6,7 @@ public class Main extends JFrame{
     public static void main(String[] args) {
 
         JFrame window = new JFrame("Practica 07");
-        window.setSize(1000,600);
+        window.setSize(1000,700);
         window.setDefaultCloseOperation(3);
         window.setLocationRelativeTo(null);
 
