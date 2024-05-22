@@ -178,7 +178,7 @@ public class Enemy extends JPanel{
         positionx += directionx;
         if(positionx > 1000){
             positiony += directiony;
-            directionx = -directionx;
+            directionx = -Math.abs(directionx);
         }else if(positionx < 0){
             positiony += directiony;
             directionx = Math.abs(directionx);
